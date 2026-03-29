@@ -1,7 +1,8 @@
 import multer from "multer";
 import path from "path";
+import { isNetlifyRuntime } from "../utils/runtime.js";
 
-const storage = multer.diskStorage({
+const diskStorage = multer.diskStorage({
   destination: (_req, _file, cb) => {
     cb(null, "uploads/");
   },
@@ -11,6 +12,8 @@ const storage = multer.diskStorage({
     cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
   },
 });
+
+const storage = isNetlifyRuntime() ? multer.memoryStorage() : diskStorage;
 
 const fileFilter = (_req, file, cb) => {
   const allowed = [

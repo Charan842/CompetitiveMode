@@ -288,8 +288,9 @@ The backend starts two scheduled jobs automatically:
 
 ## Uploads
 
-- File uploads are served from `Backend/uploads`
-- Uploaded files are available through `/uploads/<filename>`
+- In local development, uploads are served from `Backend/uploads`
+- In Netlify production, uploads are stored in Netlify Blobs
+- Uploaded files are available through `/uploads/<filename-or-key>`
 
 ## Build
 
@@ -299,6 +300,63 @@ To create a production frontend build:
 cd FrontEnd\TaskArena
 npm run build
 ```
+
+## Deploying To Netlify
+
+This project can now be deployed fully on Netlify.
+
+### Frontend preparation already included
+
+This repo now includes:
+
+- `netlify.toml` at the repository root
+- SPA redirect handling for React Router
+- Netlify Functions wiring for the Express backend
+- Netlify Scheduled Functions for automated jobs
+- Netlify Blobs-based file uploads in the Netlify runtime
+- `VITE_API_BASE_URL` support in the frontend API client
+- `FrontEnd/TaskArena/.env.example`
+
+### Netlify deploy steps
+
+1. Push this repository to GitHub.
+2. In Netlify, choose `Add new project` and import the GitHub repository.
+3. Netlify can use the included root `netlify.toml`.
+4. Add these environment variables in Netlify:
+
+```env
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_secure_secret
+JWT_EXPIRES_IN=7d
+```
+
+`VITE_API_BASE_URL` is optional for full Netlify deployment because the frontend defaults to same-origin `/api`.
+
+5. Trigger a deploy.
+6. After the first successful deploy, use the published site URL as your app URL.
+
+### If you configure build settings manually
+
+Use:
+
+- Base directory: `FrontEnd/TaskArena`
+- Build command: `npm run build`
+- Publish directory: `dist`
+
+### How backend features work on Netlify
+
+- Express API runs through Netlify Functions
+- Uploads are stored in Netlify Blobs
+- Daily turn toggle runs as a scheduled function
+- Auto result computation runs every 15 minutes as a scheduled function
+- MongoDB must still be hosted externally, such as MongoDB Atlas
+
+### Scheduled job timing
+
+Netlify scheduled functions run in UTC.
+
+- Turn toggle is configured for `30 18 * * *`, which equals `00:00` Asia/Calcutta time
+- Auto result computation runs every 15 minutes
 
 ## Future Improvements
 

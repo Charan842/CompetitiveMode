@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import Match from "../models/Match.js";
+import { runTurnToggleJob } from "../jobs/turnToggleJob.js";
 
 /**
  * Runs every day at midnight (00:00).
@@ -9,18 +9,7 @@ const scheduleTurnToggle = () => {
   cron.schedule("0 0 * * *", async () => {
     console.log("[CRON] Running daily turn toggle...");
     try {
-      const activeMatches = await Match.find({ status: "active" });
-
-      let toggled = 0;
-      for (const match of activeMatches) {
-        const [playerA, playerB] = match.players;
-        match.currentTurn =
-          match.currentTurn.toString() === playerA.toString()
-            ? playerB
-            : playerA;
-        await match.save();
-        toggled++;
-      }
+      const toggled = await runTurnToggleJob();
 
       console.log(`[CRON] Toggled turns for ${toggled} active matches.`);
     } catch (error) {

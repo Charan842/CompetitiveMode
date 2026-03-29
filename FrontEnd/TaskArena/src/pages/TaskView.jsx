@@ -115,26 +115,27 @@ const TaskView = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gray-900">
-        <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
+      <div className="app-shell">
+        <div className="page-content max-w-4xl mx-auto px-4 py-6 sm:py-8">
           {/* Back */}
-          <Link to={`/match/${task.matchId}`} className="inline-flex items-center gap-2 text-gray-500 hover:text-white text-sm mb-4 sm:mb-6 transition-colors no-underline">
+          <Link to={`/match/${task.matchId}`} className="inline-flex items-center gap-2 text-slate-500 hover:text-cyan-200 text-sm mb-4 sm:mb-6 transition-colors no-underline">
             <FiArrowLeft size={14} /> Back to Match
           </Link>
 
           {/* Header */}
           <AnimatedCard>
-            <div className="bg-gray-800 border border-gray-700 rounded-2xl p-4 sm:p-6 mb-6">
+            <div className="glass-panel-strong scan-line rounded-[28px] p-4 sm:p-6 mb-6">
               <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
                 <div className="min-w-0">
+                  <span className="eyebrow mb-3">Challenge Brief</span>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h1 className="text-xl sm:text-2xl font-bold text-white">{task.title}</h1>
+                    <h1 className="display-title text-xl sm:text-2xl text-white">{task.title}</h1>
                     {task.difficulty && <DifficultyBadge difficulty={task.difficulty} />}
                   </div>
-                  <p className="text-gray-400 text-sm mt-1">{task.description}</p>
+                  <p className="text-slate-400 text-sm mt-1">{task.description}</p>
                   <div className="flex items-center gap-2 mt-2">
-                    <FiUser className="text-gray-600" size={12} />
-                    <p className="text-gray-500 text-xs">Created by {task.createdBy?.username}</p>
+                    <FiUser className="text-slate-600" size={12} />
+                    <p className="text-slate-500 text-xs">Created by {task.createdBy?.username}</p>
                   </div>
                 </div>
                 <div className="shrink-0">
@@ -143,27 +144,27 @@ const TaskView = () => {
               </div>
 
               {/* Progress bars */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-4 bg-gray-900/50 rounded-xl p-3 sm:p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-4 metric-tile rounded-2xl p-3 sm:p-4">
                 <div>
                   <div className="flex justify-between text-xs mb-1.5">
-                    <span className="text-gray-400 font-medium">You</span>
-                    <span className="text-yellow-400 font-bold">{myCount}/{total}</span>
+                    <span className="text-slate-400 font-medium">You</span>
+                    <span className="text-cyan-300 font-bold">{myCount}/{total}</span>
                   </div>
-                  <div className="bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                  <div className="bg-slate-950/70 rounded-full h-2.5 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-yellow-500 to-yellow-400 h-full rounded-full transition-all duration-700 ease-out"
+                      className="bg-gradient-to-r from-cyan-400 to-sky-300 h-full rounded-full transition-all duration-700 ease-out"
                       style={{ width: `${total > 0 ? (myCount / total) * 100 : 0}%` }}
                     />
                   </div>
                 </div>
                 <div>
                   <div className="flex justify-between text-xs mb-1.5">
-                    <span className="text-gray-400 font-medium">Opponent</span>
-                    <span className="text-purple-400 font-bold">{opCount}/{total}</span>
+                    <span className="text-slate-400 font-medium">Opponent</span>
+                    <span className="text-amber-200 font-bold">{opCount}/{total}</span>
                   </div>
-                  <div className="bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                  <div className="bg-slate-950/70 rounded-full h-2.5 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-purple-500 to-purple-400 h-full rounded-full transition-all duration-700 ease-out"
+                      className="bg-gradient-to-r from-amber-300 to-orange-200 h-full rounded-full transition-all duration-700 ease-out"
                       style={{ width: `${total > 0 ? (opCount / total) * 100 : 0}%` }}
                     />
                   </div>
@@ -183,7 +184,7 @@ const TaskView = () => {
           {result && (
             <AnimatedCard className="mb-6">
               <h2 className="text-base sm:text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                <FiAward className="text-yellow-400" size={18} />
+                <FiAward className="text-cyan-300" size={18} />
                 Result
               </h2>
               <ResultPanel result={result} />
@@ -193,9 +194,9 @@ const TaskView = () => {
           {/* Subtasks */}
           <div>
             <h2 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 flex items-center gap-2">
-              <FiLayers className="text-yellow-400" size={18} />
+              <FiLayers className="text-cyan-300" size={18} />
               {taskUnitLabel}
-              <span className="text-xs bg-gray-700 text-gray-400 px-2 py-0.5 rounded-full">
+              <span className="hud-pill">
                 {myCount}/{total} done
               </span>
             </h2>
@@ -220,12 +221,12 @@ const TaskView = () => {
           {/* Compute Result */}
           {isExpired && !result && (
             <AnimatedCard delay={300} className="mt-6">
-              <div className="text-center bg-gray-800 border border-dashed border-yellow-500/30 rounded-xl p-6 sm:p-8">
-                <FiAward className="text-yellow-400 mx-auto mb-3" size={32} />
-                <p className="text-gray-400 mb-4">Time's up! Ready to see who won?</p>
+              <div className="text-center glass-panel rounded-[24px] p-6 sm:p-8">
+                <FiAward className="text-cyan-300 mx-auto mb-3" size={32} />
+                <p className="text-slate-400 mb-4">Time's up! Ready to see who won?</p>
                 <Link
                   to={`/results/${task._id}`}
-                  className="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-semibold px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg transition-all no-underline hover:shadow-lg hover:shadow-yellow-500/20 hover:scale-105"
+                  className="neon-button inline-flex items-center gap-2 font-semibold px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all no-underline"
                 >
                   <FiAward size={16} />
                   View Results

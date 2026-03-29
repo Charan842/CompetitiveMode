@@ -28,13 +28,13 @@ const TaskCard = ({ task }) => {
       to={`/task/${task._id}`}
       className="block no-underline group"
     >
-      <div className={`bg-gray-800 border rounded-xl p-4 sm:p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl ${categoryGlow[task.category] || categoryGlow.Custom} ${
+      <div className={`glass-panel scan-line border rounded-2xl p-4 sm:p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl ${categoryGlow[task.category] || categoryGlow.Custom} ${
         isActive
-          ? 'border-green-500/40 shadow-md shadow-green-500/5'
-          : 'border-gray-700 hover:border-yellow-500/50'
+          ? 'border-emerald-400/40 shadow-md shadow-emerald-500/10'
+          : 'hover:border-cyan-400/35'
       }`}>
         <div className="flex items-start justify-between mb-3 gap-2">
-          <h3 className="text-white font-semibold text-base sm:text-lg group-hover:text-yellow-300 transition-colors">
+          <h3 className="text-white font-semibold text-base sm:text-lg group-hover:text-cyan-200 transition-colors">
             {task.title}
           </h3>
           <div className="flex items-center gap-2 shrink-0">
@@ -45,9 +45,9 @@ const TaskCard = ({ task }) => {
           </div>
         </div>
 
-        <p className="text-gray-400 text-sm mb-4 line-clamp-2">{task.description}</p>
+        <p className="text-slate-400 text-sm mb-4 line-clamp-2">{task.description}</p>
 
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-gray-500">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-slate-400">
           <span className="flex items-center gap-1">
             <FiCalendar size={12} />
             {formatDate(task.date)}
@@ -65,23 +65,23 @@ const TaskCard = ({ task }) => {
         <div className="mt-3 flex items-center justify-between">
           <div>
             {isActive && (
-              <span className="inline-flex items-center gap-1.5 text-xs bg-green-500/20 text-green-400 px-2.5 py-1 rounded-full">
-                <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+              <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-full">
+                <span className="w-1.5 h-1.5 bg-emerald-300 rounded-full animate-pulse" />
                 LIVE
               </span>
             )}
             {isExpired && (
-              <span className="text-xs bg-red-500/15 text-red-400/80 px-2.5 py-1 rounded-full">
+              <span className="text-xs bg-rose-500/15 text-rose-300/80 px-2.5 py-1 rounded-full">
                 ENDED
               </span>
             )}
             {!isActive && !isExpired && (
-              <span className="text-xs bg-blue-500/15 text-blue-400 px-2.5 py-1 rounded-full">
+              <span className="text-xs bg-cyan-500/15 text-cyan-300 px-2.5 py-1 rounded-full">
                 UPCOMING
               </span>
             )}
           </div>
-          <FiArrowRight className="text-gray-600 group-hover:text-yellow-400 group-hover:translate-x-1 transition-all" size={14} />
+          <FiArrowRight className="text-slate-500 group-hover:text-cyan-300 group-hover:translate-x-1 transition-all" size={14} />
         </div>
       </div>
     </Link>

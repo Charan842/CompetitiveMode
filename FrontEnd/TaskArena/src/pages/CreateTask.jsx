@@ -151,19 +151,25 @@ const CreateTask = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gray-900">
-        <div className="max-w-3xl mx-auto px-4 py-6 sm:py-8">
+      <div className="app-shell">
+        <div className="page-content max-w-3xl mx-auto px-4 py-6 sm:py-8">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-gray-500 hover:text-white text-sm mb-4 sm:mb-6 transition-colors cursor-pointer bg-transparent border-none"
+            className="flex items-center gap-2 text-slate-500 hover:text-cyan-200 text-sm mb-4 sm:mb-6 transition-colors cursor-pointer bg-transparent border-none"
           >
             <FiArrowLeft size={14} /> Back
           </button>
 
-          <h1 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-5">Create Task</h1>
+          <div className="glass-panel-strong rounded-[28px] p-5 sm:p-6 mb-5 scan-line">
+            <span className="eyebrow mb-4">Task Forge</span>
+            <h1 className="display-title text-2xl sm:text-3xl text-white">Create Task</h1>
+            <p className="text-slate-400 text-sm mt-2">
+              Build a challenge that feels deliberate, competitive, and clear for both players.
+            </p>
+          </div>
 
           {hasReachedTaskLimit && (
-            <div className="mb-5 bg-red-500/10 border border-red-500/20 rounded-xl p-4">
+            <div className="mb-5 danger-button rounded-2xl p-4">
               <p className="text-red-300 text-sm">
                 This match has already reached its maximum of 5 tasks. Dispose the match or create a new one to continue.
               </p>
@@ -180,7 +186,7 @@ const CreateTask = () => {
           <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
             {/* Basic Info */}
             <AnimatedCard>
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 sm:p-6 space-y-4">
+              <div className="glass-panel rounded-[24px] p-4 sm:p-6 space-y-4">
                 <h2 className="text-white font-semibold text-sm sm:text-base">Task Details</h2>
 
                 <div>
@@ -191,7 +197,7 @@ const CreateTask = () => {
                     onChange={(e) => updateForm('title', e.target.value)}
                     placeholder="e.g., Binary Search Challenge"
                     required
-                    className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 sm:px-4 py-2.5 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                    className="futuristic-input w-full rounded-xl px-3 sm:px-4 py-2.5 text-white text-sm"
                   />
                 </div>
 
@@ -203,7 +209,7 @@ const CreateTask = () => {
                     placeholder="Describe the task..."
                     required
                     rows={3}
-                    className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 sm:px-4 py-2.5 text-white text-sm resize-y focus:outline-none focus:border-yellow-500 transition-colors"
+                    className="futuristic-input w-full rounded-xl px-3 sm:px-4 py-2.5 text-white text-sm resize-y"
                   />
                 </div>
 
@@ -213,7 +219,7 @@ const CreateTask = () => {
                     <select
                       value={form.category}
                       onChange={(e) => updateForm('category', e.target.value)}
-                      className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 sm:px-4 py-2.5 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                      className="futuristic-input w-full rounded-xl px-3 sm:px-4 py-2.5 text-white text-sm"
                     >
                       <option value="DSA">DSA</option>
                       <option value="Study">Study</option>
@@ -226,7 +232,7 @@ const CreateTask = () => {
                     <select
                       value={form.difficulty}
                       onChange={(e) => updateForm('difficulty', e.target.value)}
-                      className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 sm:px-4 py-2.5 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                      className="futuristic-input w-full rounded-xl px-3 sm:px-4 py-2.5 text-white text-sm"
                     >
                       <option value="Easy">Easy</option>
                       <option value="Medium">Medium</option>
@@ -240,7 +246,7 @@ const CreateTask = () => {
                       value={form.date}
                       onChange={(e) => updateForm('date', e.target.value)}
                       required
-                      className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 sm:px-4 py-2.5 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                      className="futuristic-input w-full rounded-xl px-3 sm:px-4 py-2.5 text-white text-sm"
                     />
                   </div>
                 </div>
@@ -253,7 +259,7 @@ const CreateTask = () => {
                       value={form.startTime}
                       onChange={(e) => updateForm('startTime', e.target.value)}
                       required
-                      className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 sm:px-4 py-2.5 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                      className="futuristic-input w-full rounded-xl px-3 sm:px-4 py-2.5 text-white text-sm"
                     />
                   </div>
                   <div>
@@ -263,7 +269,7 @@ const CreateTask = () => {
                       value={form.endTime}
                       onChange={(e) => updateForm('endTime', e.target.value)}
                       required
-                      className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 sm:px-4 py-2.5 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                      className="futuristic-input w-full rounded-xl px-3 sm:px-4 py-2.5 text-white text-sm"
                     />
                   </div>
                 </div>
@@ -282,9 +288,9 @@ const CreateTask = () => {
                         const clampedValue = Math.min(MAX_QUESTIONS, Math.max(1, nextValue));
                         setQuestionCount(clampedValue);
                       }}
-                      className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 sm:px-4 py-2.5 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                      className="futuristic-input w-full rounded-xl px-3 sm:px-4 py-2.5 text-white text-sm"
                     />
-                    <p className="text-gray-500 text-xs mt-2">Each DSA question becomes one subtask.</p>
+                    <p className="text-slate-500 text-xs mt-2">Each DSA question becomes one subtask.</p>
                   </div>
                 )}
               </div>
@@ -292,7 +298,7 @@ const CreateTask = () => {
 
             {/* Subtasks */}
             <AnimatedCard delay={150}>
-              <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 sm:p-6 space-y-4">
+              <div className="glass-panel rounded-[24px] p-4 sm:p-6 space-y-4">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <h2 className="text-white font-semibold text-sm sm:text-base">
                     {form.category === 'DSA' ? 'Questions' : 'Subtasks'}
@@ -303,7 +309,7 @@ const CreateTask = () => {
                     <button
                       type="button"
                       onClick={addSubtask}
-                      className="flex items-center gap-1 text-yellow-400 text-xs sm:text-sm hover:text-yellow-300 cursor-pointer transition-colors bg-yellow-500/10 hover:bg-yellow-500/20 px-2.5 py-1.5 rounded-lg"
+                      className="ghost-button flex items-center gap-1 text-xs sm:text-sm cursor-pointer px-2.5 py-1.5 rounded-xl"
                     >
                       <FiPlus size={13} />
                       {form.category === 'DSA' ? 'Add Question' : 'Add'}
@@ -315,13 +321,13 @@ const CreateTask = () => {
                   const info = typeInfo[st.type];
                   const Icon = info.icon;
                   return (
-                    <div key={i} className="bg-gray-900 border border-gray-700 rounded-xl p-3 sm:p-4 space-y-3 hover:border-gray-600 transition-colors">
+                    <div key={i} className="metric-tile rounded-2xl p-3 sm:p-4 space-y-3 hover:border-cyan-400/20 transition-colors">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-gray-800 ${info.color}`}>
+                          <div className={`w-7 h-7 rounded-xl flex items-center justify-center bg-slate-900/80 ${info.color}`}>
                             <Icon size={13} />
                           </div>
-                          <span className="text-gray-500 text-xs font-mono">
+                          <span className="text-slate-500 text-xs font-mono">
                             {form.category === 'DSA' ? `Q${i + 1}` : `#${i + 1}`}
                           </span>
                         </div>
@@ -340,14 +346,14 @@ const CreateTask = () => {
                         onChange={(e) => updateSubtask(i, 'title', e.target.value)}
                         placeholder={form.category === 'DSA' ? 'Question title' : 'Subtask title'}
                         required
-                        className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                        className="futuristic-input w-full rounded-xl px-3 py-2 text-white text-sm"
                       />
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <select
                           value={st.type}
                           onChange={(e) => updateSubtask(i, 'type', e.target.value)}
-                          className="bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                          className="futuristic-input rounded-xl px-3 py-2 text-white text-sm"
                         >
                           <option value="text">Text</option>
                           <option value="code">Code</option>
@@ -360,7 +366,7 @@ const CreateTask = () => {
                           value={st.resourceLink}
                           onChange={(e) => updateSubtask(i, 'resourceLink', e.target.value)}
                           placeholder={form.category === 'DSA' ? 'Problem link (optional)' : 'Resource link (optional)'}
-                          className="bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                          className="futuristic-input rounded-xl px-3 py-2 text-white text-sm"
                         />
                       </div>
 
@@ -370,7 +376,7 @@ const CreateTask = () => {
                         placeholder={form.category === 'DSA' ? 'Describe this question...' : 'Instructions for this subtask...'}
                         required
                         rows={2}
-                        className="w-full bg-gray-800 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm resize-y focus:outline-none focus:border-yellow-500 transition-colors"
+                        className="futuristic-input w-full rounded-xl px-3 py-2 text-white text-sm resize-y"
                       />
                     </div>
                   );
@@ -382,7 +388,7 @@ const CreateTask = () => {
               <button
                 type="submit"
                 disabled={loading || hasReachedTaskLimit}
-                className="w-full flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 rounded-xl transition-all disabled:opacity-50 cursor-pointer hover:shadow-lg hover:shadow-yellow-500/20 hover:scale-[1.01] active:scale-[0.99] text-sm sm:text-base"
+                className="neon-button w-full flex items-center justify-center gap-2 font-bold py-3 rounded-2xl transition-all disabled:opacity-50 cursor-pointer active:scale-[0.99] text-sm sm:text-base"
               >
                 <FiSend size={16} />
                 {loading ? 'Creating...' : 'Create Task'}

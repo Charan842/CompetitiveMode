@@ -1,9 +1,9 @@
 const Skeleton = ({ className = '' }) => (
-  <div className={`animate-pulse bg-gray-700/50 rounded-lg ${className}`} />
+  <div className={`animate-pulse bg-slate-700/40 rounded-lg ${className}`} />
 );
 
 export const CardSkeleton = () => (
-  <div className="bg-gray-800 border border-gray-700 rounded-xl p-5 space-y-3">
+  <div className="glass-panel rounded-2xl p-5 space-y-3">
     <div className="flex items-start justify-between">
       <Skeleton className="h-5 w-40" />
       <Skeleton className="h-5 w-16 rounded-full" />
@@ -19,7 +19,7 @@ export const CardSkeleton = () => (
 );
 
 export const MatchSkeleton = () => (
-  <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 flex items-center justify-between">
+  <div className="glass-panel rounded-2xl p-4 flex items-center justify-between">
     <div className="flex items-center gap-3">
       <Skeleton className="w-10 h-10 rounded-full" />
       <div className="space-y-2">
@@ -32,7 +32,7 @@ export const MatchSkeleton = () => (
 );
 
 export const StatsSkeleton = () => (
-  <div className="bg-gray-800 border border-gray-700 rounded-xl p-5 space-y-4">
+  <div className="glass-panel rounded-2xl p-5 space-y-4">
     <Skeleton className="h-5 w-32" />
     <div className="grid grid-cols-3 gap-3">
       {[1, 2, 3].map((i) => (

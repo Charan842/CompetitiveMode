@@ -23,7 +23,7 @@ const AnimatedCard = ({ children, delay = 0, className = '' }) => {
     <div
       ref={ref}
       className={`transition-all duration-500 ease-out ${
-        visible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-[0.97]'
+        visible ? 'opacity-100 translate-y-0 scale-100 blur-0' : 'opacity-0 translate-y-6 scale-[0.97] blur-[6px]'
       } ${className}`}
     >
       {children}

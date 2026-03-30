@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getMatch } from '../services/matchService';
+import { getMatch, disposeMatch } from '../services/matchService';
 import { getTasksByMatch } from '../services/taskService';
 import { getResultsByMatch } from '../services/resultService';
 import TaskCard from '../components/TaskCard';
@@ -14,15 +14,18 @@ import AnimatedCard from '../components/AnimatedCard';
 import { CardSkeleton, StatsSkeleton } from '../components/Skeleton';
 import ChatBox from '../components/ChatBox';
 import toast from 'react-hot-toast';
-import { FiPlus, FiCalendar, FiAward, FiArrowLeft, FiLayers } from 'react-icons/fi';
+import { FiPlus, FiCalendar, FiAward, FiArrowLeft, FiLayers, FiTrash2 } from 'react-icons/fi';
 
 const MatchView = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [match, setMatch] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [confirmDispose, setConfirmDispose] = useState(false);
+  const [disposing, setDisposing] = useState(false);
 
   useEffect(() => { fetchData(); }, [id]);
 
@@ -38,6 +41,19 @@ const MatchView = () => {
       toast.error(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDispose = async () => {
+    setDisposing(true);
+    try {
+      await disposeMatch(id);
+      toast.success('Match disposed');
+      navigate('/');
+    } catch (err) {
+      toast.error(err.message);
+      setDisposing(false);
+      setConfirmDispose(false);
     }
   };
 
@@ -233,6 +249,46 @@ const MatchView = () => {
                 ))}
               </div>
             </div>
+          )}
+          {/* Dispose Match */}
+          {match.status === 'active' && (
+            <AnimatedCard delay={400} className="mt-8">
+              {!confirmDispose ? (
+                <button
+                  onClick={() => setConfirmDispose(true)}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-red-900/30 text-slate-600 hover:text-red-400 hover:border-red-500/30 hover:bg-red-500/5 transition-all text-sm cursor-pointer bg-transparent"
+                >
+                  <FiTrash2 size={14} />
+                  Dispose Match
+                </button>
+              ) : (
+                <div className="glass-panel rounded-xl p-4 border border-red-500/20">
+                  <p className="text-slate-300 text-sm font-medium mb-1 text-center">End this match permanently?</p>
+                  <p className="text-slate-600 text-xs text-center mb-4">This cannot be undone. Both players will lose access.</p>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setConfirmDispose(false)}
+                      disabled={disposing}
+                      className="flex-1 py-2 rounded-lg border border-slate-700/50 text-slate-400 hover:text-white text-sm transition-colors cursor-pointer bg-transparent disabled:opacity-40"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleDispose}
+                      disabled={disposing}
+                      className="flex-1 py-2 rounded-lg bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-600/30 text-sm font-semibold transition-colors cursor-pointer disabled:opacity-40 flex items-center justify-center gap-2"
+                    >
+                      {disposing ? (
+                        <div className="w-4 h-4 border border-red-400/30 border-t-red-400 rounded-full animate-spin" />
+                      ) : (
+                        <FiTrash2 size={14} />
+                      )}
+                      {disposing ? 'Disposing…' : 'Yes, Dispose'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </AnimatedCard>
           )}
         </div>
       </div>

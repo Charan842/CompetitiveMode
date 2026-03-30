@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getAllSubmissions } from '../services/taskService';
+import { getImageUrl } from '../services/api';
 import { FiClock, FiZap, FiUser, FiUsers, FiImage, FiX, FiMaximize2 } from 'react-icons/fi';
 
 function formatTs(ts) {
@@ -8,6 +9,7 @@ function formatTs(ts) {
 }
 
 function ImageModal({ src, onClose }) {
+  src = getImageUrl(src);
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handler);
@@ -35,7 +37,8 @@ function ImageModal({ src, onClose }) {
   );
 }
 
-function ResponseBlock({ imageUrl, submittedAt, isFaster, isWinner }) {
+function ResponseBlock({ imageUrl: rawUrl, submittedAt, isFaster, isWinner }) {
+  const imageUrl = getImageUrl(rawUrl);
   const [imgError, setImgError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 

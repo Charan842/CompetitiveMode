@@ -1,12 +1,13 @@
 import { useState, useRef } from 'react';
 import { FiUpload, FiX, FiCheckCircle, FiSend, FiImage, FiLink } from 'react-icons/fi';
 import { uploadFile } from '../services/uploadService';
+import { getImageUrl } from '../services/api';
 import toast from 'react-hot-toast';
 
 const SubmissionForm = ({ subtask, onSubmit, existingResponse, disabled }) => {
   // existingResponse is now an imageUrl string
   const [imageUrl, setImageUrl] = useState(existingResponse || '');
-  const [preview, setPreview] = useState(existingResponse || '');
+  const [preview, setPreview] = useState(getImageUrl(existingResponse) || '');
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const fileInputRef = useRef(null);

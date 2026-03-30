@@ -1,19 +1,8 @@
 import multer from "multer";
-import path from "path";
-import { isNetlifyRuntime } from "../utils/runtime.js";
 
-const diskStorage = multer.diskStorage({
-  destination: (_req, _file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (_req, file, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const ext = path.extname(file.originalname);
-    cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
-  },
-});
-
-const storage = isNetlifyRuntime() ? multer.memoryStorage() : diskStorage;
+// Always use memory storage — disk is not available on serverless runtimes.
+// The controller is responsible for persisting req.file.buffer.
+const storage = multer.memoryStorage();
 
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 

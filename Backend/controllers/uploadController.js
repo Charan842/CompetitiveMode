@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs/promises";
 import { isNetlifyRuntime } from "../utils/runtime.js";
 
 // POST /api/upload
@@ -8,15 +9,15 @@ export const uploadFile = async (req, res, next) => {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
+    const ext = path.extname(req.file.originalname || "");
+    const filename = `file-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
     let fileUrl;
 
     if (isNetlifyRuntime()) {
       const { getStore } = await import("@netlify/blobs");
       const uploads = getStore("uploads");
-      const ext = path.extname(req.file.originalname || "");
-      const blobKey = `upload-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
 
-      await uploads.set(blobKey, new Blob([req.file.buffer], { type: req.file.mimetype }), {
+      await uploads.set(filename, new Blob([req.file.buffer], { type: req.file.mimetype }), {
         metadata: {
           contentType: req.file.mimetype,
           originalName: req.file.originalname,
@@ -24,9 +25,12 @@ export const uploadFile = async (req, res, next) => {
         },
       });
 
-      fileUrl = `/uploads/${blobKey}`;
+      fileUrl = `/uploads/${filename}`;
     } else {
-      fileUrl = `/uploads/${req.file.filename}`;
+      // Local dev — write buffer to disk
+      await fs.mkdir("uploads", { recursive: true });
+      await fs.writeFile(path.join("uploads", filename), req.file.buffer);
+      fileUrl = `/uploads/${filename}`;
     }
 
     res.status(201).json({

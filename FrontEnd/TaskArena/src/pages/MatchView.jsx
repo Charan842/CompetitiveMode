@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getMatch, disposeMatch } from '../services/matchService';
-import { getTasksByMatch } from '../services/taskService';
+import { getTasksByMatch, deleteTask } from '../services/taskService';
 import { getResultsByMatch } from '../services/resultService';
 import TaskCard from '../components/TaskCard';
 import PlayerStats from '../components/PlayerStats';
@@ -41,6 +41,16 @@ const MatchView = () => {
       toast.error(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await deleteTask(taskId);
+      setTasks((prev) => prev.filter((t) => t._id !== taskId));
+      toast.success('Task deleted');
+    } catch (err) {
+      toast.error(err.message);
     }
   };
 
@@ -203,7 +213,14 @@ const MatchView = () => {
               <div className="grid gap-3">
                 {tasks.map((task, i) => (
                   <AnimatedCard key={task._id} delay={i * 80}>
-                    <TaskCard task={task} />
+                    <TaskCard
+                      task={task}
+                      onDelete={
+                        (task.createdBy?._id || task.createdBy) === user._id
+                          ? handleDeleteTask
+                          : undefined
+                      }
+                    />
                   </AnimatedCard>
                 ))}
               </div>

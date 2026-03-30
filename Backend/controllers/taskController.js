@@ -202,6 +202,31 @@ export const getAllSubmissions = async (req, res, next) => {
   }
 };
 
+// DELETE /api/tasks/:id — Delete a task (only creator, only before it starts)
+export const deleteTask = async (req, res, next) => {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    if (task.createdBy.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Only the creator can delete this task" });
+    }
+
+    if (Date.now() >= new Date(task.startTime).getTime()) {
+      return res.status(400).json({ message: "Cannot delete a task that has already started" });
+    }
+
+    await Submission.deleteMany({ taskId: task._id });
+    await Task.findByIdAndDelete(task._id);
+
+    res.json({ message: "Task deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // GET /api/tasks/today/:matchId — Get today's task for a match
 export const getTodayTask = async (req, res, next) => {
   try {

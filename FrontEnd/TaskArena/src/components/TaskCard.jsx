@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { formatDate, formatTime } from '../utils/formatDate';
-import { FiCalendar, FiClock, FiLayers, FiArrowRight } from 'react-icons/fi';
+import { FiCalendar, FiClock, FiLayers, FiArrowRight, FiTrash2 } from 'react-icons/fi';
 import DifficultyBadge from './DifficultyBadge';
 
 const categoryColors = {
@@ -17,18 +18,36 @@ const categoryGlow = {
   Custom: 'hover:shadow-orange-500/10',
 };
 
-const TaskCard = ({ task }) => {
+// onDelete is only passed when the current user is the creator
+const TaskCard = ({ task, onDelete }) => {
+  const [confirm, setConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
   const isActive = Date.now() >= new Date(task.startTime).getTime() &&
                    Date.now() <= new Date(task.endTime).getTime();
   const isExpired = Date.now() > new Date(task.endTime).getTime();
+  const notStarted = Date.now() < new Date(task.startTime).getTime();
+
+  // Delete is only available before the task starts
+  const canDelete = !!onDelete && notStarted;
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDeleting(true);
+    try {
+      await onDelete(task._id);
+    } finally {
+      setDeleting(false);
+      setConfirm(false);
+    }
+  };
 
   return (
-    <Link to={`/task/${task._id}`} className="block no-underline group">
-      <div className={`glass-panel rounded-xl p-4 sm:p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl ${categoryGlow[task.category] || categoryGlow.Custom} ${
-        isActive
-          ? 'border-red-500/30 shadow-md shadow-red-500/10'
-          : 'hover:border-red-500/25'
-      }`}>
+    <div className={`glass-panel rounded-xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl ${categoryGlow[task.category] || categoryGlow.Custom} ${
+      isActive ? 'border-red-500/30 shadow-md shadow-red-500/10' : 'hover:border-red-500/25'
+    }`}>
+      <Link to={`/task/${task._id}`} className="block no-underline group p-4 sm:p-5">
         <div className="flex items-start justify-between mb-3 gap-2">
           <h3 className="text-white font-semibold text-base sm:text-lg group-hover:text-red-300 transition-colors">
             {task.title}
@@ -71,7 +90,7 @@ const TaskCard = ({ task }) => {
                 ENDED
               </span>
             )}
-            {!isActive && !isExpired && (
+            {notStarted && (
               <span className="text-xs bg-blue-500/10 text-blue-400/80 px-2.5 py-1 rounded-full border border-blue-500/20">
                 UPCOMING
               </span>
@@ -79,8 +98,51 @@ const TaskCard = ({ task }) => {
           </div>
           <FiArrowRight className="text-slate-600 group-hover:text-red-400 group-hover:translate-x-1 transition-all" size={14} />
         </div>
-      </div>
-    </Link>
+      </Link>
+
+      {/* Delete row — only for creator, only before start */}
+      {canDelete && (
+        <div
+          className="border-t border-red-950/30 px-4 py-2"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {!confirm ? (
+            <button
+              onClick={(e) => { e.preventDefault(); setConfirm(true); }}
+              className="flex items-center gap-1.5 text-xs text-slate-700 hover:text-red-400 transition-colors cursor-pointer bg-transparent border-none py-0.5"
+            >
+              <FiTrash2 size={11} />
+              Delete task
+            </button>
+          ) : (
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-xs text-slate-500">Delete this task?</span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={(e) => { e.preventDefault(); setConfirm(false); }}
+                  disabled={deleting}
+                  className="text-xs text-slate-500 hover:text-white px-2 py-1 rounded transition-colors cursor-pointer bg-transparent border-none"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className="flex items-center gap-1 text-xs text-red-400 bg-red-500/10 border border-red-500/20 px-2.5 py-1 rounded-lg hover:bg-red-500/20 transition-colors cursor-pointer disabled:opacity-40"
+                >
+                  {deleting ? (
+                    <div className="w-3 h-3 border border-red-400/30 border-t-red-400 rounded-full animate-spin" />
+                  ) : (
+                    <FiTrash2 size={11} />
+                  )}
+                  Delete
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 

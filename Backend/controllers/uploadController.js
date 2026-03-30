@@ -1,6 +1,12 @@
+import { GridFSBucket } from "mongodb";
+import { Readable } from "stream";
+import mongoose from "mongoose";
 import path from "path";
-import fs from "fs/promises";
-import { isNetlifyRuntime } from "../utils/runtime.js";
+
+const BUCKET = "uploads";
+
+const getBucket = () =>
+  new GridFSBucket(mongoose.connection.db, { bucketName: BUCKET });
 
 // POST /api/upload
 export const uploadFile = async (req, res, next) => {
@@ -11,34 +17,45 @@ export const uploadFile = async (req, res, next) => {
 
     const ext = path.extname(req.file.originalname || "");
     const filename = `file-${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
-    let fileUrl;
 
-    if (isNetlifyRuntime()) {
-      const { getStore } = await import("@netlify/blobs");
-      const uploads = getStore("uploads");
-
-      await uploads.set(filename, new Blob([req.file.buffer], { type: req.file.mimetype }), {
-        metadata: {
-          contentType: req.file.mimetype,
-          originalName: req.file.originalname,
-          size: req.file.size,
-        },
+    await new Promise((resolve, reject) => {
+      const bucket = getBucket();
+      const uploadStream = bucket.openUploadStream(filename, {
+        contentType: req.file.mimetype,
       });
-
-      fileUrl = `/uploads/${filename}`;
-    } else {
-      // Local dev — write buffer to disk
-      await fs.mkdir("uploads", { recursive: true });
-      await fs.writeFile(path.join("uploads", filename), req.file.buffer);
-      fileUrl = `/uploads/${filename}`;
-    }
+      Readable.from(req.file.buffer)
+        .pipe(uploadStream)
+        .on("error", reject)
+        .on("finish", resolve);
+    });
 
     res.status(201).json({
       message: "File uploaded successfully",
-      fileUrl,
+      fileUrl: `/api/upload/${filename}`,
       originalName: req.file.originalname,
       size: req.file.size,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// GET /api/upload/:filename — stream image from GridFS (public, no auth)
+export const serveFile = async (req, res, next) => {
+  try {
+    const bucket = getBucket();
+    const files = await bucket
+      .find({ filename: req.params.filename })
+      .toArray();
+
+    if (!files.length) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    res.set("Content-Type", files[0].contentType || "application/octet-stream");
+    res.set("Cache-Control", "public, max-age=31536000, immutable");
+
+    bucket.openDownloadStreamByName(req.params.filename).pipe(res);
   } catch (error) {
     next(error);
   }

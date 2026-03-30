@@ -15,7 +15,7 @@ export default function SubmissionHeatmap({ matchId, currentUserId }) {
 
   if (loading) {
     return (
-      <div className="bg-gray-800/50 rounded-xl border border-gray-700/50 p-6 animate-pulse">
+      <div className="glass-panel rounded-xl p-6 animate-pulse">
         <div className="h-4 bg-gray-700 rounded w-1/3 mb-4" />
         <div className="grid grid-cols-7 gap-1">
           {Array.from({ length: 28 }).map((_, i) => (
@@ -54,10 +54,10 @@ export default function SubmissionHeatmap({ matchId, currentUserId }) {
   const weekLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
   return (
-    <div className="bg-gray-800/50 rounded-xl border border-gray-700/50 p-4 animate-[fadeInUp_0.4s_ease-out]">
+    <div className="glass-panel rounded-xl p-4 animate-[fadeInUp_0.4s_ease-out]">
       <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
         <svg
-          className="w-4 h-4 text-emerald-400"
+          className="w-4 h-4 text-red-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

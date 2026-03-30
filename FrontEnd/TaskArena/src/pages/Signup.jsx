@@ -27,24 +27,25 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4"
+      style={{ background: 'radial-gradient(circle at top left, rgba(255,40,40,0.09), transparent 30%), radial-gradient(circle at bottom right, rgba(180,10,10,0.06), transparent 28%), #080303' }}>
       <div className="w-full max-w-md animate-fadeInUp">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-yellow-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float">
-            <FiZap className="text-yellow-400" size={30} />
+          <div className="w-16 h-16 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-float shadow-lg shadow-red-500/10">
+            <FiZap className="text-red-400" size={30} />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">
-            Task<span className="text-yellow-400">Arena</span>
+          <h1 className="display-title text-2xl sm:text-3xl text-white mb-1">
+            Task<span className="text-red-400">Arena</span>
           </h1>
-          <p className="text-gray-500 text-sm">Create your arena account</p>
+          <p className="text-slate-500 text-sm mt-1">Create your arena account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 sm:p-8 space-y-5 shadow-xl shadow-black/20">
+        <form onSubmit={handleSubmit} className="glass-panel-strong rounded-2xl p-6 sm:p-8 space-y-5">
           <div>
-            <label className="block text-gray-400 text-xs sm:text-sm mb-1.5 font-medium">Username</label>
+            <label className="block text-slate-400 text-xs sm:text-sm mb-1.5 font-medium">Username</label>
             <div className="relative group">
-              <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors" size={15} />
+              <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-red-400 transition-colors" size={15} />
               <input
                 type="text"
                 value={username}
@@ -52,30 +53,30 @@ const Signup = () => {
                 placeholder="arena_warrior"
                 required
                 minLength={3}
-                className="w-full bg-gray-900 border border-gray-600 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                className="futuristic-input w-full rounded-xl pl-10 pr-4 py-2.5 sm:py-3 text-sm"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-gray-400 text-xs sm:text-sm mb-1.5 font-medium">Email</label>
+            <label className="block text-slate-400 text-xs sm:text-sm mb-1.5 font-medium">Email</label>
             <div className="relative group">
-              <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors" size={15} />
+              <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-red-400 transition-colors" size={15} />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full bg-gray-900 border border-gray-600 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                className="futuristic-input w-full rounded-xl pl-10 pr-4 py-2.5 sm:py-3 text-sm"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-gray-400 text-xs sm:text-sm mb-1.5 font-medium">Password</label>
+            <label className="block text-slate-400 text-xs sm:text-sm mb-1.5 font-medium">Password</label>
             <div className="relative group">
-              <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-yellow-400 transition-colors" size={15} />
+              <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-red-400 transition-colors" size={15} />
               <input
                 type="password"
                 value={password}
@@ -83,7 +84,7 @@ const Signup = () => {
                 placeholder="••••••••"
                 required
                 minLength={6}
-                className="w-full bg-gray-900 border border-gray-600 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                className="futuristic-input w-full rounded-xl pl-10 pr-4 py-2.5 sm:py-3 text-sm"
               />
             </div>
           </div>
@@ -91,11 +92,11 @@ const Signup = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2.5 sm:py-3 rounded-xl transition-all disabled:opacity-50 cursor-pointer hover:shadow-lg hover:shadow-yellow-500/20 hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
+            className="neon-button w-full py-2.5 sm:py-3 rounded-xl transition-all disabled:opacity-50 cursor-pointer hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 text-sm font-bold"
           >
             {loading ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-2 border-gray-900 border-t-transparent" />
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white" />
                 Creating Account...
               </>
             ) : (
@@ -106,9 +107,9 @@ const Signup = () => {
             )}
           </button>
 
-          <p className="text-center text-gray-500 text-xs sm:text-sm pt-1">
+          <p className="text-center text-slate-500 text-xs sm:text-sm pt-1">
             Already have an account?{' '}
-            <Link to="/login" className="text-yellow-400 hover:text-yellow-300 hover:underline font-medium transition-colors">
+            <Link to="/login" className="text-red-400 hover:text-red-300 hover:underline font-medium transition-colors">
               Sign In
             </Link>
           </p>

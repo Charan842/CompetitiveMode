@@ -65,10 +65,6 @@ export const computeAndStoreResult = async (taskId, { requireEnded = true } = {}
 
   const match = await Match.findById(task.matchId);
   if (match) {
-    const [mPlayerA, mPlayerB] = match.players;
-    match.currentTurn =
-      match.currentTurn.toString() === mPlayerA.toString() ? mPlayerB : mPlayerA;
-
     for (const pid of [playerA, playerB]) {
       let h2h = match.h2hStats.find(
         (s) => s.odId.toString() === pid.toString()

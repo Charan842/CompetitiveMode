@@ -8,6 +8,7 @@ import taskRoutes from "./routes/taskRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
 import resultRoutes from "./routes/resultRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/submissions", submissionRoutes);
 app.use("/api/results", resultRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });

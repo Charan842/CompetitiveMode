@@ -24,10 +24,9 @@ const submissionSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    response: {
-      text: { type: String, default: null },
-      code: { type: String, default: null },
-      fileUrl: { type: String, default: null },
+    imageUrl: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }

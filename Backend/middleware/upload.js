@@ -15,38 +15,20 @@ const diskStorage = multer.diskStorage({
 
 const storage = isNetlifyRuntime() ? multer.memoryStorage() : diskStorage;
 
-const fileFilter = (_req, file, cb) => {
-  const allowed = [
-    "image/jpeg",
-    "image/png",
-    "image/gif",
-    "image/webp",
-    "application/pdf",
-    "text/plain",
-    "application/zip",
-    "application/x-zip-compressed",
-    "application/javascript",
-    "text/javascript",
-    "text/html",
-    "text/css",
-    "application/json",
-    "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "application/vnd.ms-excel",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  ];
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
-  if (allowed.includes(file.mimetype)) {
+const fileFilter = (_req, file, cb) => {
+  if (ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error(`File type ${file.mimetype} is not allowed`), false);
+    cb(new Error("Only JPG, PNG, and WebP images are allowed"), false);
   }
 };
 
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
 });
 
 export default upload;

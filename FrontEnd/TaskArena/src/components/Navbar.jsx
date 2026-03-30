@@ -21,13 +21,13 @@ const Navbar = () => {
           to="/"
           className="flex items-center gap-3 text-white no-underline group"
         >
-          <div className="w-10 h-10 rounded-2xl avatar-shell flex items-center justify-center text-cyan-300">
+          <div className="w-10 h-10 rounded-2xl avatar-shell flex items-center justify-center text-red-400">
             <FiZap className="group-hover:rotate-12 transition-transform duration-300" />
           </div>
           <div>
-            <p className="text-[10px] tracking-[0.35em] uppercase text-cyan-200/70 mb-0.5">Arena Protocol</p>
+            <p className="text-[10px] tracking-[0.35em] uppercase text-red-300/60 mb-0.5">Arena Protocol</p>
             <span className="display-title text-sm sm:text-lg">
-              Task<span className="text-cyan-300">Arena</span>
+              Task<span className="text-red-400">Arena</span>
             </span>
           </div>
         </Link>
@@ -37,14 +37,14 @@ const Navbar = () => {
             {/* Desktop */}
             <div className="hidden sm:flex items-center gap-4">
               <div className="hud-pill">
-                <span className="text-emerald-300 font-bold">{user.totalWins}<span className="text-emerald-200/60 ml-0.5">W</span></span>
-                <span className="text-slate-600">|</span>
-                <span className="text-rose-300 font-bold">{user.totalLosses}<span className="text-rose-200/60 ml-0.5">L</span></span>
-                <span className="text-slate-600">|</span>
-                <span className="text-slate-300 font-bold">{user.totalDraws}<span className="text-slate-400 ml-0.5">D</span></span>
+                <span className="text-emerald-400 font-bold">{user.totalWins}<span className="text-emerald-400/50 ml-0.5">W</span></span>
+                <span className="text-red-900/60">|</span>
+                <span className="text-red-400 font-bold">{user.totalLosses}<span className="text-red-400/50 ml-0.5">L</span></span>
+                <span className="text-red-900/60">|</span>
+                <span className="text-slate-300 font-bold">{user.totalDraws}<span className="text-slate-500 ml-0.5">D</span></span>
               </div>
               <div className="glass-panel rounded-full px-3 py-1.5 flex items-center gap-3">
-                <div className="w-8 h-8 avatar-shell rounded-full flex items-center justify-center text-cyan-200 font-bold text-sm">
+                <div className="w-8 h-8 avatar-shell rounded-full flex items-center justify-center text-red-300 font-bold text-sm">
                   {user.username.charAt(0).toUpperCase()}
                 </div>
                 <span className="text-slate-100 text-sm font-medium">{user.username}</span>
@@ -71,17 +71,17 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {user && mobileOpen && (
-        <div className="sm:hidden border-t border-cyan-500/10 bg-[#040b14]/96 backdrop-blur-xl animate-[slideDown_0.2s_ease-out]">
+        <div className="sm:hidden border-t border-red-900/30 bg-[#080202]/96 backdrop-blur-xl animate-[slideDown_0.2s_ease-out]">
           <div className="px-4 py-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 avatar-shell rounded-full flex items-center justify-center text-cyan-200 font-bold">
+              <div className="w-10 h-10 avatar-shell rounded-full flex items-center justify-center text-red-300 font-bold">
                 {user.username.charAt(0).toUpperCase()}
               </div>
               <div>
                 <p className="text-white font-medium">{user.username}</p>
                 <div className="flex items-center gap-2 text-xs mt-0.5">
-                  <span className="text-emerald-300 font-bold">{user.totalWins}W</span>
-                  <span className="text-rose-300 font-bold">{user.totalLosses}L</span>
+                  <span className="text-emerald-400 font-bold">{user.totalWins}W</span>
+                  <span className="text-red-400 font-bold">{user.totalLosses}L</span>
                   <span className="text-slate-400 font-bold">{user.totalDraws}D</span>
                 </div>
               </div>

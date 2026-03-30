@@ -5,7 +5,7 @@ export default function InsightPanel({ insights }) {
     <div className="mt-4 space-y-2">
       <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
         <svg
-          className="w-4 h-4 text-cyan-400"
+          className="w-4 h-4 text-red-400"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -23,10 +23,10 @@ export default function InsightPanel({ insights }) {
         {insights.map((insight, idx) => (
           <div
             key={idx}
-            className="flex items-start gap-2 px-3 py-2 rounded-lg bg-gray-800/50 border border-gray-700/50 animate-[fadeInUp_0.3s_ease-out] transition-all hover:bg-gray-800/80"
+            className="flex items-start gap-2 px-3 py-2 rounded-lg glass-panel animate-[fadeInUp_0.3s_ease-out] transition-all hover:bg-black/30"
             style={{ animationDelay: `${idx * 100}ms`, animationFillMode: "both" }}
           >
-            <span className="text-cyan-400 mt-0.5 shrink-0">▸</span>
+            <span className="text-red-400 mt-0.5 shrink-0">▸</span>
             <p className="text-sm text-gray-300 leading-relaxed">{insight}</p>
           </div>
         ))}

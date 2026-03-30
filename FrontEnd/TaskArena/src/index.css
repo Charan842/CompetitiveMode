@@ -7,15 +7,15 @@
 }
 
 :root {
-  --bg-base: #040b14;
-  --bg-panel: rgba(9, 19, 35, 0.8);
-  --bg-panel-strong: rgba(12, 24, 43, 0.92);
-  --line-soft: rgba(140, 190, 255, 0.16);
-  --line-strong: rgba(111, 255, 233, 0.22);
-  --text-soft: #93a4bf;
-  --text-main: #ebf3ff;
-  --accent-cyan: #62e8ff;
-  --accent-amber: #ffc46b;
+  --bg-base: #080303;
+  --bg-panel: rgba(18, 6, 6, 0.88);
+  --bg-panel-strong: rgba(24, 7, 7, 0.96);
+  --line-soft: rgba(255, 59, 59, 0.14);
+  --line-strong: rgba(255, 80, 80, 0.26);
+  --text-soft: #9a8585;
+  --text-main: #f0e8e8;
+  --accent-red: #ff3b3b;
+  --accent-orange: #ff7b3b;
 }
 
 html {
@@ -28,9 +28,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background:
-    radial-gradient(circle at top left, rgba(98, 232, 255, 0.12), transparent 26%),
-    radial-gradient(circle at top right, rgba(255, 196, 107, 0.12), transparent 22%),
-    linear-gradient(180deg, #081321 0%, #040b14 42%, #02070d 100%);
+    radial-gradient(circle at top left, rgba(255, 40, 40, 0.1), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(180, 20, 20, 0.07), transparent 24%),
+    linear-gradient(180deg, #120505 0%, #0a0303 40%, #060101 100%);
   color: var(--text-main);
 }
 
@@ -58,23 +58,23 @@ a, button, input, textarea, select {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(98, 232, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(98, 232, 255, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(255, 50, 50, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 50, 50, 0.055) 1px, transparent 1px);
   background-size: 72px 72px;
-  mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.6), transparent 88%);
-  opacity: 0.35;
+  mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent 85%);
+  opacity: 0.4;
   pointer-events: none;
 }
 
 .app-shell::after {
   content: "";
   position: absolute;
-  width: 28rem;
-  height: 28rem;
-  right: -10rem;
-  top: 6rem;
-  background: radial-gradient(circle, rgba(98, 232, 255, 0.18), transparent 68%);
-  filter: blur(20px);
+  width: 30rem;
+  height: 30rem;
+  right: -8rem;
+  top: 4rem;
+  background: radial-gradient(circle, rgba(255, 40, 40, 0.14), transparent 68%);
+  filter: blur(24px);
   pointer-events: none;
 }
 
@@ -94,10 +94,10 @@ a, button, input, textarea, select {
   align-items: center;
   gap: 0.5rem;
   padding: 0.45rem 0.8rem;
-  border: 1px solid rgba(98, 232, 255, 0.18);
+  border: 1px solid rgba(255, 59, 59, 0.22);
   border-radius: 999px;
-  background: rgba(98, 232, 255, 0.08);
-  color: #abecff;
+  background: rgba(255, 59, 59, 0.08);
+  color: #ffb0b0;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.16em;
@@ -109,29 +109,29 @@ a, button, input, textarea, select {
   width: 0.45rem;
   height: 0.45rem;
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--accent-cyan), #d3faff);
-  box-shadow: 0 0 14px rgba(98, 232, 255, 0.75);
+  background: linear-gradient(135deg, #ff3b3b, #ff8080);
+  box-shadow: 0 0 14px rgba(255, 59, 59, 0.8);
 }
 
 .glass-panel {
   background:
-    linear-gradient(180deg, rgba(15, 29, 49, 0.9), rgba(7, 14, 26, 0.78));
+    linear-gradient(180deg, rgba(22, 8, 8, 0.88), rgba(10, 3, 3, 0.78));
   border: 1px solid var(--line-soft);
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 20px 60px rgba(0, 0, 0, 0.36),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(18px);
 }
 
 .glass-panel-strong {
   background:
-    radial-gradient(circle at top, rgba(98, 232, 255, 0.1), transparent 40%),
-    linear-gradient(180deg, rgba(16, 31, 54, 0.96), rgba(7, 14, 26, 0.9));
+    radial-gradient(circle at top, rgba(255, 50, 50, 0.08), transparent 40%),
+    linear-gradient(180deg, rgba(26, 8, 8, 0.96), rgba(10, 3, 3, 0.9));
   border: 1px solid var(--line-strong);
   box-shadow:
-    0 25px 80px rgba(0, 0, 0, 0.32),
-    0 0 0 1px rgba(98, 232, 255, 0.04) inset,
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 25px 80px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(255, 59, 59, 0.04) inset,
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(24px);
 }
 
@@ -141,8 +141,8 @@ a, button, input, textarea, select {
   gap: 0.45rem;
   padding: 0.4rem 0.8rem;
   border-radius: 999px;
-  border: 1px solid rgba(126, 157, 199, 0.18);
-  background: rgba(8, 16, 29, 0.72);
+  border: 1px solid rgba(255, 100, 100, 0.16);
+  background: rgba(12, 4, 4, 0.72);
   color: var(--text-soft);
   font-size: 0.75rem;
   font-weight: 600;
@@ -150,74 +150,78 @@ a, button, input, textarea, select {
 
 .metric-tile {
   border-radius: 1rem;
-  border: 1px solid rgba(126, 157, 199, 0.16);
-  background: linear-gradient(180deg, rgba(10, 21, 38, 0.82), rgba(7, 14, 26, 0.52));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 80, 80, 0.12);
+  background: linear-gradient(180deg, rgba(18, 6, 6, 0.82), rgba(10, 3, 3, 0.52));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
 .avatar-shell {
-  border: 1px solid rgba(98, 232, 255, 0.18);
+  border: 1px solid rgba(255, 59, 59, 0.24);
   background:
-    radial-gradient(circle at top, rgba(98, 232, 255, 0.18), transparent 72%),
-    rgba(7, 16, 29, 0.9);
+    radial-gradient(circle at top, rgba(255, 59, 59, 0.18), transparent 72%),
+    rgba(15, 4, 4, 0.9);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 0 0 3px rgba(98, 232, 255, 0.05);
+    0 0 0 3px rgba(255, 59, 59, 0.07);
 }
 
 .neon-button {
-  border: 1px solid rgba(98, 232, 255, 0.28);
-  background: linear-gradient(135deg, rgba(98, 232, 255, 0.95), rgba(132, 254, 255, 0.78));
-  color: #02131e;
-  box-shadow: 0 14px 34px rgba(98, 232, 255, 0.22);
+  border: 1px solid rgba(255, 59, 59, 0.5);
+  background: linear-gradient(135deg, #ff3b3b, #cc1a1a);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 8px 28px rgba(255, 59, 59, 0.3);
 }
 
 .neon-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 16px 40px rgba(98, 232, 255, 0.28);
+  box-shadow: 0 12px 36px rgba(255, 59, 59, 0.4);
+  background: linear-gradient(135deg, #ff5555, #e02020);
 }
 
 .ghost-button {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-  color: #d8e6fb;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  color: #d8d0d0;
 }
 
 .ghost-button:hover {
-  border-color: rgba(98, 232, 255, 0.24);
-  background: rgba(98, 232, 255, 0.08);
+  border-color: rgba(255, 59, 59, 0.3);
+  background: rgba(255, 59, 59, 0.07);
+  color: #ffb0b0;
 }
 
 .danger-button {
-  border: 1px solid rgba(255, 111, 145, 0.24);
-  background: rgba(255, 111, 145, 0.09);
-  color: #ffb7c6;
+  border: 1px solid rgba(255, 80, 80, 0.2);
+  background: rgba(255, 80, 80, 0.08);
+  color: #ff9090;
 }
 
 .danger-button:hover {
-  background: rgba(255, 111, 145, 0.14);
-  box-shadow: 0 10px 28px rgba(255, 111, 145, 0.12);
+  background: rgba(255, 80, 80, 0.15);
+  box-shadow: 0 8px 24px rgba(255, 59, 59, 0.15);
 }
 
 .futuristic-input {
-  border: 1px solid rgba(126, 157, 199, 0.18);
+  border: 1px solid rgba(255, 80, 80, 0.16);
   background:
-    linear-gradient(180deg, rgba(4, 10, 20, 0.84), rgba(9, 18, 34, 0.82));
+    linear-gradient(180deg, rgba(8, 2, 2, 0.88), rgba(14, 5, 5, 0.84));
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
     0 0 0 1px rgba(255, 255, 255, 0.01);
   color: var(--text-main);
 }
 
 .futuristic-input::placeholder {
-  color: rgba(147, 164, 191, 0.7);
+  color: rgba(154, 133, 133, 0.7);
 }
 
 .futuristic-input:focus {
-  border-color: rgba(98, 232, 255, 0.35);
+  border-color: rgba(255, 59, 59, 0.4);
   box-shadow:
-    0 0 0 3px rgba(98, 232, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 0 0 3px rgba(255, 59, 59, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  outline: none;
 }
 
 select.futuristic-input {
@@ -226,13 +230,13 @@ select.futuristic-input {
 
 select.futuristic-input option,
 select.futuristic-input optgroup {
-  background: #081321;
+  background: #120505;
   color: var(--text-main);
 }
 
 .topbar {
-  background: rgba(4, 10, 20, 0.72);
-  border-bottom: 1px solid rgba(126, 157, 199, 0.14);
+  background: rgba(8, 2, 2, 0.88);
+  border-bottom: 1px solid rgba(255, 59, 59, 0.1);
   backdrop-filter: blur(22px);
 }
 
@@ -244,7 +248,7 @@ select.futuristic-input optgroup {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, transparent, rgba(98, 232, 255, 0.04), transparent);
+  background: linear-gradient(180deg, transparent, rgba(255, 50, 50, 0.04), transparent);
   background-size: 100% 180%;
   animation: scanMove 8s linear infinite;
   pointer-events: none;
@@ -281,24 +285,30 @@ select.futuristic-input optgroup {
   100% { background-position: 0 180%; }
 }
 
+@keyframes redPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 59, 59, 0); }
+  50% { box-shadow: 0 0 0 6px rgba(255, 59, 59, 0.18); }
+}
+
 .animate-slideDown { animation: slideDown 0.25s ease-out; }
 .animate-fadeInUp { animation: fadeInUp 0.4s ease-out; }
 .animate-scaleIn { animation: scaleIn 0.3s ease-out; }
 .animate-float { animation: float 3s ease-in-out infinite; }
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 80, 80, 0.06), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
+.animate-red-pulse { animation: redPulse 2s ease-in-out infinite; }
 
 /* Scrollbar styling */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #07111d; }
-::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #17355a, #2c678b); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #4da4c8; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #060101; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #3a0808, #7a1010); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #cc2020; }
 
 /* Focus ring for accessibility */
 input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible {
-  outline: 2px solid rgba(98, 232, 255, 0.75);
+  outline: 2px solid rgba(255, 59, 59, 0.7);
   outline-offset: 2px;
 }

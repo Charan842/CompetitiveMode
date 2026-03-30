@@ -5,6 +5,7 @@ import {
   getTask,
   getTodayTask,
   getTemplates,
+  getAllSubmissions,
 } from "../controllers/taskController.js";
 import auth from "../middleware/auth.js";
 
@@ -16,6 +17,7 @@ router.post("/", createTask);
 router.get("/templates", getTemplates);
 router.get("/match/:matchId", getTasksByMatch);
 router.get("/today/:matchId", getTodayTask);
+router.get("/:taskId/all-submissions", getAllSubmissions);
 router.get("/:id", getTask);
 
 export default router;

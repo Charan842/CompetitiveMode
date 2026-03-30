@@ -2,11 +2,15 @@ import Submission from "../models/Submission.js";
 import SubmissionTracking from "../models/SubmissionTracking.js";
 import Task from "../models/Task.js";
 
-// POST /api/submissions — Submit a response for a subtask
+// POST /api/submissions — Submit an image proof for a subtask
 export const createSubmission = async (req, res, next) => {
   try {
-    const { taskId, subtaskId, response } = req.body;
+    const { taskId, subtaskId, imageUrl } = req.body;
     const now = Date.now(); // server time only
+
+    if (!imageUrl || typeof imageUrl !== "string" || !imageUrl.trim()) {
+      return res.status(400).json({ message: "An image upload is required" });
+    }
 
     const task = await Task.findById(taskId);
     if (!task) {
@@ -55,7 +59,7 @@ export const createSubmission = async (req, res, next) => {
         taskId,
         subtaskId,
         submittedAt: new Date(now),
-        response,
+        imageUrl: imageUrl.trim(),
       },
       { upsert: true, new: true, runValidators: true }
     );

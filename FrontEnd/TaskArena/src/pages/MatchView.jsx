@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getMatch, disposeMatch } from '../services/matchService';
+import { getMatch, disposeMatch, getMatchResult } from '../services/matchService';
 import { getTasksByMatch, deleteTask } from '../services/taskService';
 import { getResultsByMatch } from '../services/resultService';
 import TaskCard from '../components/TaskCard';
@@ -24,6 +24,7 @@ const MatchView = () => {
   const [tasks, setTasks] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [matchResult, setMatchResult] = useState(null);
   const [confirmDispose, setConfirmDispose] = useState(false);
   const [disposing, setDisposing] = useState(false);
 
@@ -37,6 +38,11 @@ const MatchView = () => {
       setMatch(matchRes.data);
       setTasks(tasksRes.data);
       setResults(resultsRes.data);
+      // fetch overall standings (silent fail if no results yet)
+      try {
+        const mr = await getMatchResult(id);
+        if (mr.data.totalTasks > 0) setMatchResult(mr.data);
+      } catch { /* no results yet */ }
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -163,6 +169,43 @@ const MatchView = () => {
               )}
             </div>
           </AnimatedCard>
+
+          {/* Overall Standings */}
+          {matchResult && (
+            <AnimatedCard delay={150} className="mb-6">
+              <div className="glass-panel rounded-2xl px-5 py-4">
+                <p className="text-[10px] uppercase tracking-widest text-red-400/50 font-semibold mb-3">Overall Standings</p>
+                <div className="flex items-center gap-3">
+                  {matchResult.players.map((entry, i) => {
+                    const isWinner = matchResult.overallWinner?._id === entry.player._id ||
+                      matchResult.overallWinner?._id?.toString() === entry.player._id?.toString();
+                    const isMe = entry.player._id === user._id || entry.player._id?.toString() === user._id;
+                    return (
+                      <div key={i} className={`flex-1 flex items-center justify-between px-3 py-2.5 rounded-xl border ${
+                        isWinner
+                          ? 'bg-red-500/10 border-red-500/30'
+                          : 'bg-black/30 border-slate-800/40'
+                      }`}>
+                        <span className="text-sm font-medium text-white">
+                          {isMe ? 'You' : entry.player.username}
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          {isWinner && <span className="text-xs">🏆</span>}
+                          <span className={`text-xl font-black ${isWinner ? 'text-red-400' : 'text-slate-400'}`}>
+                            {entry.wins}
+                          </span>
+                          <span className="text-slate-600 text-xs">wins</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {matchResult.isDraw && (
+                  <p className="text-center text-slate-500 text-xs mt-2">Tied — {matchResult.totalTasks} task{matchResult.totalTasks !== 1 ? 's' : ''} played</p>
+                )}
+              </div>
+            </AnimatedCard>
+          )}
 
           {/* Stats */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6">

@@ -9,3 +9,4 @@ export const getMatchStats = (id) => api.get(`/matches/${id}/stats`);
 export const setConstraint = (id, constraint) => api.patch(`/matches/${id}/constraint`, { constraint });
 export const getActivityHeatmap = (id) => api.get(`/matches/${id}/activity`);
 export const disposeMatch = (id) => api.delete(`/matches/${id}`);
+export const getMatchResult = (id) => api.get(`/matches/${id}/result`);

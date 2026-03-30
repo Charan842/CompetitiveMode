@@ -1,13 +1,44 @@
 import { useState, useEffect } from 'react';
 import { getAllSubmissions } from '../services/taskService';
-import { FiClock, FiZap, FiUser, FiUsers, FiExternalLink, FiImage } from 'react-icons/fi';
+import { FiClock, FiZap, FiUser, FiUsers, FiImage, FiX, FiMaximize2 } from 'react-icons/fi';
 
 function formatTs(ts) {
   if (!ts) return null;
   return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
 
+function ImageModal({ src, onClose }) {
+  useEffect(() => {
+    const handler = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-white/60 hover:text-white bg-black/40 rounded-full p-2 cursor-pointer border-none"
+      >
+        <FiX size={20} />
+      </button>
+      <img
+        src={src}
+        alt="Full view"
+        className="max-w-[95vw] max-h-[90vh] object-contain rounded-lg"
+        onClick={(e) => e.stopPropagation()}
+      />
+    </div>
+  );
+}
+
 function ResponseBlock({ imageUrl, submittedAt, isFaster, isWinner }) {
+  const [imgError, setImgError] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
   if (!imageUrl) {
     return (
       <div className="flex items-center justify-center h-24 rounded-lg bg-black/40 border border-dashed border-slate-700/40">
@@ -17,47 +48,56 @@ function ResponseBlock({ imageUrl, submittedAt, isFaster, isWinner }) {
   }
 
   return (
-    <div className={`rounded-xl overflow-hidden border transition-all ${
-      isFaster ? 'border-emerald-500/30 shadow-sm shadow-emerald-500/10' : 'border-slate-800/50'
-    }`}>
-      {/* Top bar */}
-      <div className={`flex items-center justify-between px-3 py-1.5 text-xs ${
-        isFaster ? 'bg-emerald-950/40' : 'bg-black/50'
+    <>
+      {modalOpen && <ImageModal src={imageUrl} onClose={() => setModalOpen(false)} />}
+
+      <div className={`rounded-xl overflow-hidden border transition-all ${
+        isFaster ? 'border-emerald-500/30 shadow-sm shadow-emerald-500/10' : 'border-slate-800/50'
       }`}>
-        <div className="flex items-center gap-2">
-          {isFaster && (
-            <span className="flex items-center gap-1 text-emerald-400 font-semibold">
-              <FiZap size={10} /> Faster
+        {/* Top bar */}
+        <div className={`flex items-center justify-between px-3 py-1.5 text-xs ${
+          isFaster ? 'bg-emerald-950/40' : 'bg-black/50'
+        }`}>
+          <div className="flex items-center gap-2">
+            {isFaster && (
+              <span className="flex items-center gap-1 text-emerald-400 font-semibold">
+                <FiZap size={10} /> Faster
+              </span>
+            )}
+            {isWinner && <span className="text-red-400 font-bold">🏆</span>}
+          </div>
+          {submittedAt && (
+            <span className="flex items-center gap-1 text-slate-600">
+              <FiClock size={10} />
+              {formatTs(submittedAt)}
             </span>
           )}
-          {isWinner && <span className="text-red-400 font-bold">🏆</span>}
         </div>
-        {submittedAt && (
-          <span className="flex items-center gap-1 text-slate-600">
-            <FiClock size={10} />
-            {formatTs(submittedAt)}
-          </span>
-        )}
-      </div>
 
-      {/* Image */}
-      <div className="bg-black/60 p-2 space-y-2">
-        <img
-          src={imageUrl}
-          alt="Submission proof"
-          className="w-full rounded-lg object-contain max-h-52"
-          loading="lazy"
-        />
-        <a
-          href={imageUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-1.5 text-[10px] text-slate-500 hover:text-red-400 transition-colors no-underline"
-        >
-          <FiExternalLink size={10} /> View full image
-        </a>
+        {/* Image */}
+        <div className="bg-black/60 p-2">
+          {imgError ? (
+            <div className="flex flex-col items-center justify-center h-24 gap-2 text-slate-600">
+              <FiImage size={20} />
+              <span className="text-xs">Image unavailable</span>
+            </div>
+          ) : (
+            <div className="relative group cursor-zoom-in" onClick={() => setModalOpen(true)}>
+              <img
+                src={imageUrl}
+                alt="Submission proof"
+                className="w-full rounded-lg object-contain max-h-52"
+                loading="lazy"
+                onError={() => setImgError(true)}
+              />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 rounded-lg">
+                <FiMaximize2 className="text-white" size={20} />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

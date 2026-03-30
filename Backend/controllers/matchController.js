@@ -1,6 +1,7 @@
 import Match from "../models/Match.js";
 import User from "../models/User.js";
 import Submission from "../models/Submission.js";
+import Result from "../models/Result.js";
 
 // POST /api/matches — Create a new match between 2 players
 export const createMatch = async (req, res, next) => {
@@ -197,6 +198,51 @@ export const disposeMatch = async (req, res, next) => {
     await match.save();
 
     res.json({ message: "Match disposed successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// GET /api/matches/:id/result — Overall winner based on task wins
+export const getMatchResult = async (req, res, next) => {
+  try {
+    const match = await Match.findById(req.params.id).populate("players", "username");
+    if (!match) return res.status(404).json({ message: "Match not found" });
+
+    const isPlayer = match.players.some(
+      (p) => p._id.toString() === req.user._id.toString()
+    );
+    if (!isPlayer) return res.status(403).json({ message: "Not a participant" });
+
+    const results = await Result.find({ matchId: match._id });
+
+    const winsMap = {};
+    for (const p of match.players) winsMap[p._id.toString()] = 0;
+
+    for (const r of results) {
+      if (r.winner) {
+        const wid = r.winner.toString();
+        if (winsMap[wid] !== undefined) winsMap[wid]++;
+      }
+    }
+
+    const [p1, p2] = match.players;
+    const p1Wins = winsMap[p1._id.toString()];
+    const p2Wins = winsMap[p2._id.toString()];
+
+    let overallWinner = null;
+    if (p1Wins > p2Wins) overallWinner = p1;
+    else if (p2Wins > p1Wins) overallWinner = p2;
+
+    res.json({
+      players: [
+        { player: p1, wins: p1Wins },
+        { player: p2, wins: p2Wins },
+      ],
+      overallWinner,
+      isDraw: overallWinner === null && results.length > 0,
+      totalTasks: results.length,
+    });
   } catch (error) {
     next(error);
   }

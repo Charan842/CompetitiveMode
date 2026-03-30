@@ -6,6 +6,7 @@ import {
   toggleTurn,
   searchUsers,
   getMatchStats,
+  getMatchResult,
   setConstraint,
   getActivityHeatmap,
   disposeMatch,
@@ -21,6 +22,7 @@ router.get("/", getMyMatches);
 router.get("/search-users", searchUsers);
 router.get("/:id", getMatch);
 router.get("/:id/stats", getMatchStats);
+router.get("/:id/result", getMatchResult);
 router.get("/:id/activity", getActivityHeatmap);
 router.patch("/:id/toggle-turn", toggleTurn);
 router.patch("/:id/constraint", setConstraint);

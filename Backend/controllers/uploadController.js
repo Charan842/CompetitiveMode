@@ -40,7 +40,7 @@ export const uploadFile = async (req, res, next) => {
   }
 };
 
-// GET /api/upload/:filename — stream image from GridFS (public, no auth)
+// GET /api/upload/:filename — serve image from GridFS (public, no auth)
 export const serveFile = async (req, res, next) => {
   try {
     const bucket = getBucket();
@@ -52,10 +52,23 @@ export const serveFile = async (req, res, next) => {
       return res.status(404).json({ message: "File not found" });
     }
 
-    res.set("Content-Type", files[0].contentType || "application/octet-stream");
-    res.set("Cache-Control", "public, max-age=31536000, immutable");
+    // Buffer the entire file before sending — pipe() is unreliable in serverless
+    const chunks = [];
+    await new Promise((resolve, reject) => {
+      bucket
+        .openDownloadStreamByName(req.params.filename)
+        .on("data", (chunk) => chunks.push(chunk))
+        .on("error", reject)
+        .on("end", resolve);
+    });
 
-    bucket.openDownloadStreamByName(req.params.filename).pipe(res);
+    const buffer = Buffer.concat(chunks);
+    const contentType = files[0].contentType || "image/jpeg";
+
+    res.set("Content-Type", contentType);
+    res.set("Content-Length", buffer.length);
+    res.set("Cache-Control", "public, max-age=31536000, immutable");
+    res.send(buffer);
   } catch (error) {
     next(error);
   }

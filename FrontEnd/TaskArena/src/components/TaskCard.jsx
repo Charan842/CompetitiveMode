@@ -18,8 +18,9 @@ const categoryGlow = {
   Custom: 'hover:shadow-orange-500/10',
 };
 
-// onDelete is only passed when the current user is the creator
-const TaskCard = ({ task, onDelete }) => {
+// onDelete — passed when current user may delete
+// hasResult — true when result has been computed for this task
+const TaskCard = ({ task, onDelete, hasResult }) => {
   const [confirm, setConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -28,8 +29,8 @@ const TaskCard = ({ task, onDelete }) => {
   const isExpired = Date.now() > new Date(task.endTime).getTime();
   const notStarted = Date.now() < new Date(task.startTime).getTime();
 
-  // Delete is only available before the task starts
-  const canDelete = !!onDelete && notStarted;
+  // Can delete before start (creator only) OR after result (any participant)
+  const canDelete = !!onDelete && (notStarted || hasResult);
 
   const handleDelete = async (e) => {
     e.preventDefault();

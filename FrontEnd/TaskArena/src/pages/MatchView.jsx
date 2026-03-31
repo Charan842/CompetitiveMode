@@ -254,18 +254,25 @@ const MatchView = () => {
               </AnimatedCard>
             ) : (
               <div className="grid gap-3">
-                {tasks.map((task, i) => (
-                  <AnimatedCard key={task._id} delay={i * 80}>
-                    <TaskCard
-                      task={task}
-                      onDelete={
-                        (task.createdBy?._id || task.createdBy) === user._id
-                          ? handleDeleteTask
-                          : undefined
-                      }
-                    />
-                  </AnimatedCard>
-                ))}
+                {tasks.map((task, i) => {
+                  const hasResult = results.some(
+                    (r) => (r.taskId?._id || r.taskId) === task._id ||
+                           (r.taskId?._id || r.taskId)?.toString() === task._id?.toString()
+                  );
+                  return (
+                    <AnimatedCard key={task._id} delay={i * 80}>
+                      <TaskCard
+                        task={task}
+                        hasResult={hasResult}
+                        onDelete={
+                          hasResult || (task.createdBy?._id || task.createdBy) === user._id
+                            ? handleDeleteTask
+                            : undefined
+                        }
+                      />
+                    </AnimatedCard>
+                  );
+                })}
               </div>
             )}
           </div>

@@ -210,15 +210,28 @@ export const deleteTask = async (req, res, next) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    if (task.createdBy.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "Only the creator can delete this task" });
+    const isParticipant = task.participants.some(
+      (p) => p.toString() === req.user._id.toString()
+    );
+    if (!isParticipant) {
+      return res.status(403).json({ message: "You are not a participant in this task" });
     }
 
-    if (Date.now() >= new Date(task.startTime).getTime()) {
-      return res.status(400).json({ message: "Cannot delete a task that has already started" });
+    const resultExists = await Result.exists({ taskId: task._id });
+
+    // Before start: only creator can delete
+    // After result: any participant can delete (cleanup)
+    if (!resultExists) {
+      if (task.createdBy.toString() !== req.user._id.toString()) {
+        return res.status(403).json({ message: "Only the creator can delete this task" });
+      }
+      if (Date.now() >= new Date(task.startTime).getTime()) {
+        return res.status(400).json({ message: "Cannot delete a task that has already started" });
+      }
     }
 
     await Submission.deleteMany({ taskId: task._id });
+    await Result.deleteOne({ taskId: task._id });
     await Task.findByIdAndDelete(task._id);
 
     res.json({ message: "Task deleted successfully" });

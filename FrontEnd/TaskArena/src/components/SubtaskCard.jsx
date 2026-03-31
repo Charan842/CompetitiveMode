@@ -21,6 +21,11 @@ const typeBg = {
   file: 'bg-orange-400/10',
 };
 
+const ensureAbsolute = (url) => {
+  if (!url) return url;
+  return url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+};
+
 const SubtaskCard = ({ subtask, index, isCompleted, onClick }) => {
   const Icon = typeIcons[subtask.type] || FiFileText;
 
@@ -66,7 +71,7 @@ const SubtaskCard = ({ subtask, index, isCompleted, onClick }) => {
         </span>
         {subtask.resourceLink && (
           <a
-            href={subtask.resourceLink}
+            href={ensureAbsolute(subtask.resourceLink)}
             target="_blank"
             rel="noopener noreferrer"
             className="text-red-400/70 text-xs hover:text-red-300 hover:underline transition-colors"

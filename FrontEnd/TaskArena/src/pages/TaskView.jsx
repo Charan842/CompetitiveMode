@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getTask } from '../services/taskService';
 import { getMySubmissions, getTrackingByTask } from '../services/submissionService';
@@ -18,6 +18,7 @@ import { FiAward, FiLayers, FiArrowLeft, FiUser } from 'react-icons/fi';
 
 const TaskView = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [task, setTask] = useState(null);
   const [mySubmissions, setMySubmissions] = useState([]);
@@ -199,16 +200,12 @@ const TaskView = () => {
             <div className="grid gap-2.5 sm:gap-3">
               {task.subtasks.map((subtask, index) => (
                 <AnimatedCard key={subtask._id} delay={index * 80}>
-                  <Link
-                    to={isActive ? `/submit/${task._id}/${subtask._id}` : '#'}
-                    className={`no-underline block ${!isActive ? 'pointer-events-none' : ''}`}
-                  >
-                    <SubtaskCard
-                      subtask={subtask}
-                      index={index}
-                      isCompleted={completedSubtaskIds.has(subtask._id)}
-                    />
-                  </Link>
+                  <SubtaskCard
+                    subtask={subtask}
+                    index={index}
+                    isCompleted={completedSubtaskIds.has(subtask._id)}
+                    onClick={isActive ? () => navigate(`/submit/${task._id}/${subtask._id}`) : undefined}
+                  />
                 </AnimatedCard>
               ))}
             </div>

@@ -20,8 +20,8 @@ const SubmissionForm = ({ subtask, onSubmit, existingResponse, disabled }) => {
       toast.error('Only JPG, PNG, and WebP images are allowed');
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image must be under 5MB');
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('Image must be under 2MB');
       return;
     }
 
@@ -120,7 +120,7 @@ const SubmissionForm = ({ subtask, onSubmit, existingResponse, disabled }) => {
               <FiUpload className="text-red-400" size={22} />
             </div>
             <p className="text-slate-300 text-sm font-medium mb-1">Click to upload image</p>
-            <p className="text-slate-600 text-xs">JPG, PNG, WebP · Max 5MB</p>
+            <p className="text-slate-600 text-xs">JPG, PNG, WebP · Max 2MB</p>
           </button>
         ) : (
           <div className="space-y-2">

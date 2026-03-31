@@ -17,7 +17,7 @@ const fileFilter = (_req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB — base64 adds ~33%, stays under 10mb JSON limit
 });
 
 export default upload;

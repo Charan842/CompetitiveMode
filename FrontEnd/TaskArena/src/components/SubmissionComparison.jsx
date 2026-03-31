@@ -1,13 +1,20 @@
 import { useState, useEffect } from 'react';
 import { getAllSubmissions } from '../services/taskService';
-import { FiClock, FiZap, FiUser, FiUsers, FiImage, FiX, FiMaximize2 } from 'react-icons/fi';
+import { FiClock, FiZap, FiUser, FiUsers, FiImage, FiX, FiMaximize2, FiDownload } from 'react-icons/fi';
+
+function downloadImage(dataUrl, filename) {
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = filename;
+  a.click();
+}
 
 function formatTs(ts) {
   if (!ts) return null;
   return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
 
-function ImageModal({ src, onClose }) {
+function ImageModal({ src, filename, onClose }) {
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handler);
@@ -19,12 +26,21 @@ function ImageModal({ src, onClose }) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
       onClick={onClose}
     >
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 text-white/60 hover:text-white bg-black/40 rounded-full p-2 cursor-pointer border-none"
-      >
-        <FiX size={20} />
-      </button>
+      <div className="absolute top-4 right-4 flex items-center gap-2">
+        <button
+          onClick={(e) => { e.stopPropagation(); downloadImage(src, filename); }}
+          className="text-white/60 hover:text-white bg-black/40 rounded-full p-2 cursor-pointer border-none"
+          title="Download"
+        >
+          <FiDownload size={18} />
+        </button>
+        <button
+          onClick={onClose}
+          className="text-white/60 hover:text-white bg-black/40 rounded-full p-2 cursor-pointer border-none"
+        >
+          <FiX size={20} />
+        </button>
+      </div>
       <img
         src={src}
         alt="Full view"
@@ -35,9 +51,11 @@ function ImageModal({ src, onClose }) {
   );
 }
 
-function ResponseBlock({ imageUrl, submittedAt, isFaster, isWinner }) {
+function ResponseBlock({ imageUrl, submittedAt, isFaster, isWinner, label }) {
   const [imgError, setImgError] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const filename = `submission-${label || 'proof'}-${submittedAt ? new Date(submittedAt).getTime() : Date.now()}.jpg`;
 
   if (!imageUrl) {
     return (
@@ -49,7 +67,7 @@ function ResponseBlock({ imageUrl, submittedAt, isFaster, isWinner }) {
 
   return (
     <>
-      {modalOpen && <ImageModal src={imageUrl} onClose={() => setModalOpen(false)} />}
+      {modalOpen && <ImageModal src={imageUrl} filename={filename} onClose={() => setModalOpen(false)} />}
 
       <div className={`rounded-xl overflow-hidden border transition-all ${
         isFaster ? 'border-emerald-500/30 shadow-sm shadow-emerald-500/10' : 'border-slate-800/50'
@@ -75,25 +93,33 @@ function ResponseBlock({ imageUrl, submittedAt, isFaster, isWinner }) {
         </div>
 
         {/* Image */}
-        <div className="bg-black/60 p-2">
+        <div className="bg-black/60 p-2 space-y-1.5">
           {imgError ? (
             <div className="flex flex-col items-center justify-center h-24 gap-2 text-slate-600">
               <FiImage size={20} />
               <span className="text-xs">Image unavailable</span>
             </div>
           ) : (
-            <div className="relative group cursor-zoom-in" onClick={() => setModalOpen(true)}>
-              <img
-                src={imageUrl}
-                alt="Submission proof"
-                className="w-full rounded-lg object-contain max-h-52"
-                loading="lazy"
-                onError={() => setImgError(true)}
-              />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 rounded-lg">
-                <FiMaximize2 className="text-white" size={20} />
+            <>
+              <div className="relative group cursor-zoom-in" onClick={() => setModalOpen(true)}>
+                <img
+                  src={imageUrl}
+                  alt="Submission proof"
+                  className="w-full rounded-lg object-contain max-h-52"
+                  loading="lazy"
+                  onError={() => setImgError(true)}
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 rounded-lg">
+                  <FiMaximize2 className="text-white" size={20} />
+                </div>
               </div>
-            </div>
+              <button
+                onClick={() => downloadImage(imageUrl, filename)}
+                className="w-full flex items-center justify-center gap-1.5 text-[10px] text-slate-600 hover:text-red-400 transition-colors cursor-pointer bg-transparent border-none py-0.5"
+              >
+                <FiDownload size={11} /> Download
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -209,6 +235,7 @@ export default function SubmissionComparison({ taskId, currentUserId, result }) 
                     submittedAt={mySub?.submittedAt}
                     isFaster={myFaster}
                     isWinner={isIWinner}
+                    label="mine"
                   />
                 </div>
                 <div className="p-3">
@@ -221,6 +248,7 @@ export default function SubmissionComparison({ taskId, currentUserId, result }) 
                     submittedAt={opSub?.submittedAt}
                     isFaster={opFaster}
                     isWinner={!isIWinner && !!winnerId}
+                    label={opponent?.user?.username || 'opponent'}
                   />
                 </div>
               </div>
@@ -259,7 +287,7 @@ export default function SubmissionComparison({ taskId, currentUserId, result }) 
                 {(activeTab === 'mine' || activeTab === 'compare') && (
                   <div>
                     <p className="text-xs text-slate-500 mb-1.5 flex items-center gap-1"><FiUser size={11} /> You</p>
-                    <ResponseBlock imageUrl={mySub?.imageUrl} submittedAt={mySub?.submittedAt} isFaster={myFaster} isWinner={isIWinner} />
+                    <ResponseBlock imageUrl={mySub?.imageUrl} submittedAt={mySub?.submittedAt} isFaster={myFaster} isWinner={isIWinner} label="mine" />
                   </div>
                 )}
                 {(activeTab === 'opponent' || activeTab === 'compare') && (
@@ -267,7 +295,7 @@ export default function SubmissionComparison({ taskId, currentUserId, result }) 
                     <p className="text-xs text-slate-500 mb-1.5 flex items-center gap-1">
                       <FiUsers size={11} /> {opponent?.user?.username || 'Opponent'}
                     </p>
-                    <ResponseBlock imageUrl={opSub?.imageUrl} submittedAt={opSub?.submittedAt} isFaster={opFaster} isWinner={!isIWinner && !!winnerId} />
+                    <ResponseBlock imageUrl={opSub?.imageUrl} submittedAt={opSub?.submittedAt} isFaster={opFaster} isWinner={!isIWinner && !!winnerId} label={opponent?.user?.username || 'opponent'} />
                   </div>
                 )}
               </div>

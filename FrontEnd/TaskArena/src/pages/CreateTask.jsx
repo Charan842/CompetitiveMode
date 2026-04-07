@@ -7,15 +7,16 @@ import AnimatedCard from '../components/AnimatedCard';
 import TemplateSelector from '../components/TemplateSelector';
 import ConstraintBanner from '../components/ConstraintBanner';
 import toast from 'react-hot-toast';
-import { FiPlus, FiTrash2, FiSend, FiArrowLeft, FiFileText, FiCode, FiLink, FiUpload } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiSend, FiArrowLeft, FiFileText, FiCode, FiLink, FiUpload, FiImage } from 'react-icons/fi';
 
 const emptySubtask = { title: '', type: 'text', resourceLink: '', instructions: '' };
 
 const typeInfo = {
-  text: { icon: FiFileText, label: 'Text', color: 'text-blue-400' },
-  code: { icon: FiCode, label: 'Code', color: 'text-violet-400' },
-  link: { icon: FiLink, label: 'Link', color: 'text-emerald-400' },
-  file: { icon: FiUpload, label: 'File', color: 'text-orange-400' },
+  text:  { icon: FiFileText, label: 'Text',  color: 'text-blue-400' },
+  code:  { icon: FiCode,     label: 'Code',  color: 'text-violet-400' },
+  link:  { icon: FiLink,     label: 'Link',  color: 'text-emerald-400' },
+  file:  { icon: FiUpload,   label: 'File',  color: 'text-orange-400' },
+  image: { icon: FiImage,    label: 'Image', color: 'text-pink-400' },
 };
 
 const CreateTask = () => {

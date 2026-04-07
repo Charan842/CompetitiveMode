@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { getAllSubmissions } from '../services/taskService';
 import { FiClock, FiZap, FiUser, FiUsers, FiX, FiMaximize2, FiDownload, FiFileText, FiLink, FiCode, FiUpload, FiImage } from 'react-icons/fi';
 
@@ -26,9 +27,9 @@ function ImageModal({ src, filename, onClose }) {
     return () => window.removeEventListener('keydown', handler);
   }, [onClose]);
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90"
       onClick={onClose}
     >
       <div className="absolute top-4 right-4 flex items-center gap-2">
@@ -52,7 +53,8 @@ function ImageModal({ src, filename, onClose }) {
         className="max-w-[95vw] max-h-[90vh] object-contain rounded-lg"
         onClick={(e) => e.stopPropagation()}
       />
-    </div>
+    </div>,
+    document.body
   );
 }
 

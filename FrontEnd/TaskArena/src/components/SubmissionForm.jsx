@@ -88,7 +88,8 @@ const SubmissionForm = ({ subtask, onSubmit, existingResponse, disabled }) => {
     ((type === 'file' || type === 'image') && !!fileUrl)
   );
 
-  const isImageFile = preview?.startsWith('data:image');
+  // blob: URLs (during upload) and data: URIs (after upload) are both valid img src
+  const isImageFile = type === 'image' || preview?.startsWith('data:image');
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

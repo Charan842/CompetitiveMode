@@ -209,6 +209,7 @@ const CreateTask = () => {
                           <option value="code">Code</option>
                           <option value="link">Link</option>
                           <option value="file">File</option>
+                          <option value="image">Image</option>
                         </select>
                         <input type="text" value={st.resourceLink} onChange={(e) => updateSubtask(i, 'resourceLink', e.target.value)}
                           placeholder="Resource link (optional)"

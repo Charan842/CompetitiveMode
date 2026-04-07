@@ -175,7 +175,7 @@ export const getAllSubmissions = async (req, res, next) => {
       grouped[uid].submissions.push({
         subtaskId: sub.subtaskId,
         subtask: subtaskMap[sub.subtaskId?.toString()] || null,
-        imageUrl: sub.imageUrl,
+        response: sub.response,
         submittedAt: sub.submittedAt,
         locked: sub.locked,
       });

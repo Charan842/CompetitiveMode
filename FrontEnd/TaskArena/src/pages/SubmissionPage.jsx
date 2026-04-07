@@ -37,9 +37,9 @@ const SubmissionPage = () => {
 
   const isLocked = existingSubmission?.locked === true;
 
-  const handleSubmit = async (imageUrl) => {
+  const handleSubmit = async (response) => {
     try {
-      await createSubmission({ taskId, subtaskId, imageUrl });
+      await createSubmission({ taskId, subtaskId, response });
       toast.success('Submitted successfully!');
       navigate(`/task/${taskId}`);
     } catch (err) {
@@ -145,7 +145,7 @@ const SubmissionPage = () => {
             <SubmissionForm
               subtask={subtask}
               onSubmit={handleSubmit}
-              existingResponse={existingSubmission?.imageUrl}
+              existingResponse={existingSubmission?.response}
               disabled={!isActive || isLocked}
             />
           </AnimatedCard>

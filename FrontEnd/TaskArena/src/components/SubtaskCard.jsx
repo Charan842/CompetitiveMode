@@ -1,10 +1,11 @@
-import { FiFileText, FiLink, FiCode, FiUpload, FiCheckCircle, FiChevronRight } from 'react-icons/fi';
+import { FiFileText, FiLink, FiCode, FiUpload, FiImage, FiCheckCircle, FiChevronRight } from 'react-icons/fi';
 
 const typeIcons = {
   text: FiFileText,
   link: FiLink,
   code: FiCode,
   file: FiUpload,
+  image: FiImage,
 };
 
 const typeColors = {
@@ -12,6 +13,7 @@ const typeColors = {
   link: 'text-emerald-400',
   code: 'text-violet-400',
   file: 'text-orange-400',
+  image: 'text-pink-400',
 };
 
 const typeBg = {
@@ -19,6 +21,7 @@ const typeBg = {
   link: 'bg-emerald-400/10',
   code: 'bg-violet-400/10',
   file: 'bg-orange-400/10',
+  image: 'bg-pink-400/10',
 };
 
 const ensureAbsolute = (url) => {

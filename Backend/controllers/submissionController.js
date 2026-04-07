@@ -2,15 +2,11 @@ import Submission from "../models/Submission.js";
 import SubmissionTracking from "../models/SubmissionTracking.js";
 import Task from "../models/Task.js";
 
-// POST /api/submissions — Submit an image proof for a subtask
+// POST /api/submissions — Submit a response for a subtask
 export const createSubmission = async (req, res, next) => {
   try {
-    const { taskId, subtaskId, imageUrl } = req.body;
+    const { taskId, subtaskId, response } = req.body;
     const now = Date.now(); // server time only
-
-    if (!imageUrl || typeof imageUrl !== "string" || !imageUrl.trim()) {
-      return res.status(400).json({ message: "An image upload is required" });
-    }
 
     const task = await Task.findById(taskId);
     if (!task) {
@@ -29,6 +25,19 @@ export const createSubmission = async (req, res, next) => {
     const subtask = task.subtasks.id(subtaskId);
     if (!subtask) {
       return res.status(404).json({ message: "Subtask not found" });
+    }
+
+    // Validate response has content for the subtask type
+    if (!response || typeof response !== "object") {
+      return res.status(400).json({ message: "A response is required" });
+    }
+    const type = subtask.type || "text";
+    const hasContent =
+      ((type === "text" || type === "link") && response.text?.trim()) ||
+      (type === "code" && response.code?.trim()) ||
+      ((type === "file" || type === "image") && response.fileUrl?.trim());
+    if (!hasContent) {
+      return res.status(400).json({ message: "Please provide a valid response" });
     }
 
     // Enforce time window — backend only, never trust frontend
@@ -59,7 +68,7 @@ export const createSubmission = async (req, res, next) => {
         taskId,
         subtaskId,
         submittedAt: new Date(now),
-        imageUrl: imageUrl.trim(),
+        response,
       },
       { upsert: true, new: true, runValidators: true }
     );

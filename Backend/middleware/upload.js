@@ -4,19 +4,8 @@ import multer from "multer";
 // The controller is responsible for persisting req.file.buffer.
 const storage = multer.memoryStorage();
 
-const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-
-const fileFilter = (_req, file, cb) => {
-  if (ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only JPG, PNG, and WebP images are allowed"), false);
-  }
-};
-
 const upload = multer({
   storage,
-  fileFilter,
   limits: { fileSize: 2 * 1024 * 1024 }, // 2MB — base64 adds ~33%, stays under 10mb JSON limit
 });
 
